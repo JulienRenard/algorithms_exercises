@@ -20,8 +20,19 @@ public class HuffmanDecoderTest {
     @Grade(value=1)
     public void testExample() {
         String sentence = "This is the small example.";
-        String encodedsentence = "111010001011001110101100111001111000100110001111110100100101101000111010101111111000101000110";
+        String encodedsentence = "100111101111001110111100111010001110100110101111111100010010101001100011001111000001000110010";
         HuffmanDecoder.Node root = HuffmanDecoderGenerator.HuffmanTree(sentence);
+        String studentdecodedsentence = HuffmanDecoder.decode(encodedsentence, root);
+        assertEquals(sentence, studentdecodedsentence);
+    }
+
+    @Test
+    @Grade(value=1)
+    public void testExampleShuffle() {
+        String sentence = "This is the small example.";
+        String encodedsentence = "100111101111001110111100111010001110100110101111111100010010101001100011001111000001000110010";
+        HuffmanDecoder.Node root = HuffmanDecoderGenerator.HuffmanTree(sentence);
+        HuffmanDecoderGenerator.MessTree(root);
         String studentdecodedsentence = HuffmanDecoder.decode(encodedsentence, root);
         assertEquals(sentence, studentdecodedsentence);
     }
@@ -41,7 +52,7 @@ public class HuffmanDecoderTest {
     public void testEmpty() {
         HuffmanDecoder.Node root = HuffmanDecoderGenerator.HuffmanTree("");
         String studentdecodedsentence = HuffmanDecoder.decode("", root);
-        assertEquals(null, studentdecodedsentence);
+        assertEquals("", studentdecodedsentence);
     }
 
     static Stream<Instance> dataProvider() {
@@ -69,7 +80,9 @@ public class HuffmanDecoderTest {
                 Scanner scan = new Scanner(new FileInputStream(file));
                 sentence = scan.nextLine();
                 encodedsentence  = scan.nextLine();
-                studentdecodedsentence = HuffmanDecoder.decode(encodedsentence, HuffmanDecoderGenerator.HuffmanTree(sentence));
+                HuffmanDecoder.Node root = HuffmanDecoderGenerator.HuffmanTree(sentence);
+                HuffmanDecoderGenerator.MessTree(root);
+                studentdecodedsentence = HuffmanDecoder.decode(encodedsentence, root);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
