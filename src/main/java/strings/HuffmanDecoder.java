@@ -125,37 +125,20 @@ public class HuffmanDecoder {
         GetLeaves(root, leaves);
         for (Node leaf : leaves) if(!parents.contains(leaf.parent)) parents.add(leaf.parent);
 
-        int index = 0;
-        Node currentleaf = leaves.get(0);
-        while (true) {
-            boolean swapped = false;
-            for (Node parent : parents){
-                if (parent.symbol.contains(currentleaf.symbol)){
-                    if (!IsLeaf(parent.left) && parent.left.symbol.contains(currentleaf.symbol)) continue;
-                    if (!IsLeaf(parent.right) && parent.right.symbol.contains(currentleaf.symbol)) continue;
-                    if (IsLeaf(parent.left) && (!parent.symbol.contains(parent.left.symbol) || parent.right.symbol.contains(parent.left.symbol))) {
-                        currentleaf = swapleaves(currentleaf, parent.left);
-                        swapped = true;
-                        break;
-                    }else if (IsLeaf(parent.right) && (!parent.symbol.contains(parent.right.symbol)|| parent.left.symbol.contains(parent.right.symbol))) {
-                        currentleaf = swapleaves(currentleaf, parent.right);
-                        swapped = true;
-                        break;
-                    }
+
+        for (Node parent : parents){
+            if (IsLeaf(parent.left) && parent.symbol.charAt(0) != parent.left.symbol.charAt(0)){
+                for (Node leaf : leaves){
+                    if (parent.symbol.charAt(0) == leaf.symbol.charAt(0)) swapleaves(parent.left, leaf);
                 }
             }
-            if (!swapped){
-                index++;
-                if (index == leaves.size()) break;
-                currentleaf = leaves.get(index);
+            if (IsLeaf(parent.right) && parent.symbol.charAt(parent.symbol.length()-1) != parent.right.symbol.charAt(0)){
+                for (Node leaf : leaves){
+                    if (parent.symbol.charAt(parent.symbol.length()-1) == leaf.symbol.charAt(0)) swapleaves(parent.right, leaf);
+                }
             }
         }
 
-        for (Node parent : parents){
-            if (IsLeaf(parent.left) && IsLeaf(parent.right) && parent.left.compareTo(parent.right) > 0) {
-                swapleaves(parent.left, parent.right);
-            }
-        }
         // END STRIP
     }
 
